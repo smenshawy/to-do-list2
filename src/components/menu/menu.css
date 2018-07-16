@@ -1,0 +1,73 @@
+.menu{
+    position: absolute;
+    z-index: 1;
+    top:0;
+    height: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: white;
+    overflow-x: hidden;
+    width: 300px;
+    left: -300px;
+}
+
+.menu--open{
+    left: 0;
+}
+
+.menu--animated{
+    transition: 0.5s;
+}
+
+.menu__header{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 50px;
+    font-weight: bold;
+    text-align: center;
+    background-color: maroon;
+    padding: 20px;
+}
+.menu__header__initial{
+    background-color:red;
+    height:50px;
+    border-radius:50%;
+    -moz-border-radius:50%;
+    -webkit-border-radius:50%;
+    width:50px;
+    line-height: 50px;
+    font-weight: normal;
+}
+.menu__header__info{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-left: 20px;
+}
+
+.menu__header__info__porgress{
+    display: flex;
+    flex-direction: row;
+}
+
+.menu__item{
+    display: flex;
+    flex-direction: row;
+    padding: 10px 20px;
+    color: black;
+    align-items: center;
+}
+
+.menu__item--selected{
+    background-color: silver;
+}
+
+.menu__item__icon{
+    width: 30px;
+    height: 30px;
+}
+
+.menu__item__content{
+    flex-grow: 1;
+    padding-left: 20px;
+}

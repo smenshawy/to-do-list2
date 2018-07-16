@@ -1,0 +1,21 @@
+.board{
+    overflow-x: hidden;
+}
+
+.board__header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 50px;   
+    text-align: center;
+    background-color: maroon;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    font-family: Tahoma, Geneva, Verdana, sans-serif;
+    margin-bottom: 20px;
+}
+
+.board__header__icon{
+    width: 30px;
+    height: 30px;
+    padding: 0 20px;
+}
