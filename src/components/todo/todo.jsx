@@ -42,22 +42,26 @@ class ToDo extends Component{
     render(){
         const {todoLeft, todoInvisible, todoAnimated} = this.state
         const {text, done, date, priority} = this.props
-        const todoClasses = classNames("todo", "todo--priority" + priority, {"todo--animated": todoAnimated, "todo--invisible": todoInvisible})
+        const todoClasses = classNames("todo",
+        {"todo--invisible": todoInvisible})
+        const todoUndoneClasses = classNames("todo__undone", 
+            "todo__undone--priority" + priority, 
+            {"todo__undone--animated": todoAnimated, "todo__undone--invisible": todoInvisible})
 
         return(
-            <div style={{position: 'relative'}}>
-            <div 
-                className={todoClasses}
-                style={{left: todoLeft}} 
-                onTouchStart={this.handleTouchStart} 
-                onTouchMove={this.handleTouchMove} 
-                onTouchEnd={this.handleTouchEnd}>
-                <div className="todo__title">{text}</div>
-                <div className="todo__date">{date}</div>
-            </div>
-            <div className="todo--done">
-                <img className="todo--done__icon" src={TickIcon}/>
-            </div>
+            <div className={todoClasses}>
+                <div className="todo__done">
+                    <img className="todo__done__icon" src={TickIcon}/>
+                </div>
+                <div 
+                    className={todoUndoneClasses}
+                    style={{left: todoLeft}} 
+                    onTouchStart={this.handleTouchStart} 
+                    onTouchMove={this.handleTouchMove} 
+                    onTouchEnd={this.handleTouchEnd}>
+                    <h3 className="todo__undone__title">{text}</h3>
+                    <span className="todo__undone__date">{date.toLocaleDateString()}</span>
+                </div>
             </div>
         )
     }

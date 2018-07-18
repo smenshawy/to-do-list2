@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux'
-import todos from './todos'
+import board from './board'
 import menu from './menu'
 
-export default combineReducers({todos, menu})
+export default combineReducers({board, menu})

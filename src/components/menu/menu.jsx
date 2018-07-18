@@ -7,6 +7,7 @@ import ProgressIcon from '../../icons/progress-icon.svg'
 import {connect} from 'react-redux'
 import classNames from 'classnames'
 import {toggleMenu} from '../../actions/menu-actions'
+import {showInbox, showToday, showNext7Days} from '../../actions/scope-actions'
 
 class Menu extends Component{
     constructor(props){
@@ -15,6 +16,9 @@ class Menu extends Component{
         this.handleTouchStart = this.handleTouchStart.bind(this)
         this.handleTouchMove = this.handleTouchMove.bind(this)
         this.handleTouchEnd = this.handleTouchEnd.bind(this)
+        this.handleInboxClick = this.handleInboxClick.bind(this)
+        this.handleTodayClick = this.handleTodayClick.bind(this)
+        this.handleNext7DaysClick = this.handleNext7DaysClick.bind(this)
 
         this.xTouchStart = null
         this.state = {xTouchStart: null, xTouchDiff: null, menuLeft: null, menuAnimated: false,}
@@ -53,10 +57,28 @@ class Menu extends Component{
             this.props.toggleMenu(false)
         }
     }
+    handleInboxClick(e){
+        this.props.showInbox()
+        this.props.toggleMenu(false)
+        e.stopPropagation()
+    }
+    handleTodayClick(e){
+        this.props.showToday()
+        this.props.toggleMenu(false)
+        e.stopPropagation()
+    }
+    handleNext7DaysClick(e){
+        this.props.showNext7Days()
+        this.props.toggleMenu(false)
+        e.stopPropagation()
+    }
     render(){
-        const {openMenu, todosCount, todosDoneCount, todosUndoneCount} = this.props
+        const {openMenu, board} = this.props
         const {menuLeft, menuAnimated} = this.state
         const menuClasses = classNames('menu', { 'menu--open': openMenu, 'menu--animated': menuAnimated });
+        const inboxClasses = classNames('menu__item', {'menu__item--selected': board.scopeId === 'INBOX' })
+        const todayClasses = classNames('menu__item', {'menu__item--selected': board.scopeId === 'TODAY' })
+        const next7DaysClasses = classNames('menu__item', {'menu__item--selected': board.scopeId === 'NEXT_7_DAYS' })
 
         return(
             <div 
@@ -69,23 +91,23 @@ class Menu extends Component{
                     <h1 className="menu__header__initial">S</h1>
                     <div className="menu__header__info">
                         <h3>sherif.menshawy</h3>
-                        <h5>{todosDoneCount}/{todosCount}</h5>
+                        <h5>{board.doneTodosCount}/{board.allTodosCount}</h5>
                     </div>
                 </div>
-                <div className="menu__item menu__item--selected">
+                <div className={inboxClasses} onClick={this.handleInboxClick}>
                     <img src={InboxIcon} className="menu__item__icon"/>
                     <h3 className="menu__item__content">Inbox</h3>
-                    <span>{todosUndoneCount}</span>
+                    <span>{board.inboxUndoneCount}</span>
                 </div>
-                <div className="menu__item">
+                <div className={todayClasses} onClick={this.handleTodayClick}>
                     <img src={TodayIcon} className="menu__item__icon"/>
                     <h3 className="menu__item__content">Today</h3>
-                    <span>0</span>
+                    <span>{board.todayUndoneCount}</span>
                 </div>
-                <div className="menu__item">
+                <div className={next7DaysClasses} onClick={this.handleNext7DaysClick}>
                     <img src={WeekIcon} className="menu__item__icon"/>
                     <h3 className="menu__item__content">Next 7 Days</h3>
-                    <span>0</span>
+                    <span>{board.next7DaysUndoneCount}</span>
                 </div>
             </div>
         )
@@ -94,10 +116,8 @@ class Menu extends Component{
 
 const mapStateToProps = state => {
     return {
-        todosCount: state.todos.length,
-        todosDoneCount: state.todos.filter(todo => todo.done).length,
-        todosUndoneCount: state.todos.filter(todo => !todo.done).length,
         openMenu: state.menu.open,
+        board: state.board,
     }
 }
 
@@ -105,7 +125,16 @@ const mapDispatchToProps = dispatch => {
     return {
         toggleMenu: (open) => {
             dispatch(toggleMenu(open))
-        }
+        },
+        showInbox: () => {
+            dispatch(showInbox())
+        },
+        showToday: () => {
+            dispatch(showToday())
+        },
+        showNext7Days: () => {
+            dispatch(showNext7Days())
+        },
     }
 }
 

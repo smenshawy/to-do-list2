@@ -1,0 +1,25 @@
+.todos-group{
+    overflow: hidden;
+    border-bottom: 1px solid whitesmoke;
+}
+
+.todos-group:last-of-type{
+    border-bottom: 0px;
+}
+
+.todos-group__header{
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    color: maroon;
+}
+
+.todos-group__header__title{
+    margin-right: 20px;
+}
+
+.todos-group__header__subtitle{
+    color: lightgrey;
+    font-size: 12px;
+    align-self: center;
+}

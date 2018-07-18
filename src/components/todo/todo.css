@@ -1,38 +1,59 @@
 .todo{
+    position: relative;
+    border-bottom: 1px solid whitesmoke;
+}
+
+.todo:last-child, .todo--invisible{
+    border-bottom: 0;
+}
+
+.todo__undone{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 50px;
     padding: 10px 20px;
-    border-bottom: 1px solid whitesmoke;
     position: relative;
     z-index: 1;
     background-color: white;
 }
 
-.todo--animated{
+
+.todo__undone--animated{
     transition: left 0.5s, height 0.5s 0.5s, padding 0.5s 0.5s;
 }
 
-.todo--priority1{
+.todo__undone--priority1{
     border-left: 5px solid red;
 }
 
-.todo--priority2{
+.todo__undone--priority2{
     border-left: 5px solid orange;
 }
 
-.todo--priority3{
+.todo__undone--priority3{
     border-left: 5px solid yellowgreen;
 }
 
-.todo--invisible{
+.todo__undone--invisible{
     height: 0px;
     padding: 0px;
     border: 0px;
+    border: 0;
 }
 
-.todo--done{
+.todo__undone__title{
+    color: black;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.todo__undone__date{
+    color: lightgrey;
+    font-size: 12px;
+}
+
+.todo__done{
     position: absolute;
     top: 0;
     left: 0;
@@ -42,17 +63,7 @@
     background-color: green;
 }
 
-.todo__title{
-    color: black;
-    font-size: 16px;
-}
-
-.todo__date{
-    color: lightgrey;
-    font-size: 12px;
-}
-
-.todo--done__icon{
+.todo__done__icon{
     height: 30px;
     width: 30px;
     padding: 10px 0;
