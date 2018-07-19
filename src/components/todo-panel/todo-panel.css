@@ -1,0 +1,21 @@
+.todo-panel{
+    position: fixed;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    overflow: hidden;
+    transition: .25s ease-in-out;
+}
+
+.todo-panel--invisible{
+    height: 0;
+}
+
+.todo-panel__icon{
+    width: 30px;
+    height: 30px;
+}

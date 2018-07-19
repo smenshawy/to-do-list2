@@ -5,6 +5,8 @@ import Menu from '../../components/menu/menu'
 import BurgerIcon from  '../../icons/burger-icon.png'
 import './board.css'
 import {toggleMenu} from '../../actions/menu-actions'
+import {unselectTodo} from '../../actions/board-actions'
+import TodoPanel from '../../components/todo-panel/todo-panel'
 
 class Board extends Component{
     constructor(props){
@@ -18,7 +20,13 @@ class Board extends Component{
         e.stopPropagation()
     }
     handleBoardClick(){
-        this.props.toggleMenu(false)
+        const {board, menu, toggleMenu, unselectTodo} = this.props
+        if(menu.open){
+            toggleMenu(false)
+        }
+        else if(board.selectedTodoId !== 0){
+            unselectTodo()
+        }
     }
     render(){
         const {board, toggleMenu} = this.props
@@ -32,6 +40,7 @@ class Board extends Component{
                 {board.todosGroups.map(({id, title, subtitle, date, todos}) => 
                     <ToDosGroup key={id || date || 0} title={title} subtitle={subtitle} date={date} todos={todos}/>
                 )}
+                <TodoPanel/>
             </div>
         )
     }
@@ -40,6 +49,7 @@ class Board extends Component{
 const mapStateToProps = state => {
     return {
         board: state.board,
+        menu: state.menu,
     }
 }
 
@@ -47,6 +57,9 @@ const mapDispatchToProps = dispatch => {
     return {
         toggleMenu: (open) => {
             dispatch(toggleMenu(open))
+        },
+        unselectTodo: () => {
+            dispatch(unselectTodo())
         }
     }
 }

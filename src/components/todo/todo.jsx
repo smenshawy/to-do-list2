@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import './todo.css'
 import classNames from 'classnames'
-import TickIcon from '../../icons/tick-icon.png'
-import {markAsDone} from '../../actions/todos-actions'
+import TickIcon from '../../icons/tick-icon.svg'
+import {markAsDone, selectTodo} from '../../actions/board-actions'
 import {connect} from 'react-redux'
 
 class ToDo extends Component{
@@ -13,8 +13,15 @@ class ToDo extends Component{
         this.handleTouchStart = this.handleTouchStart.bind(this)
         this.handleTouchMove = this.handleTouchMove.bind(this)
         this.handleTouchEnd = this.handleTouchEnd.bind(this)
+        this.handleClick = this.handleClick.bind(this)
 
         this.state = {xTouchStart: null, xTouchPrevious: null, xToucLatesthDiff: null, todoLeft: null, todoInvisible: null, todoAnimated: false,}
+    }
+
+    componenWillReceiveProps(nextProps){
+        if(nextProps !== this.props){
+
+        }
     }
 
     handleTouchStart(e){
@@ -39,14 +46,22 @@ class ToDo extends Component{
         }
     }
 
+    handleClick(e){
+        const {id, selectTodo} = this.props
+        selectTodo(id)
+        e.stopPropagation()
+    }
+
     render(){
         const {todoLeft, todoInvisible, todoAnimated} = this.state
-        const {text, done, date, priority} = this.props
+        const {id, text, done, date, priority, board} = this.props
         const todoClasses = classNames("todo",
         {"todo--invisible": todoInvisible})
         const todoUndoneClasses = classNames("todo__undone", 
             "todo__undone--priority" + priority, 
-            {"todo__undone--animated": todoAnimated, "todo__undone--invisible": todoInvisible})
+            {"todo__undone--animated": todoAnimated, 
+            "todo__undone--invisible": todoInvisible,
+            "todo__undone--selected": id === board.selectedTodoId})
 
         return(
             <div className={todoClasses}>
@@ -58,7 +73,8 @@ class ToDo extends Component{
                     style={{left: todoLeft}} 
                     onTouchStart={this.handleTouchStart} 
                     onTouchMove={this.handleTouchMove} 
-                    onTouchEnd={this.handleTouchEnd}>
+                    onTouchEnd={this.handleTouchEnd}
+                    onClick={this.handleClick}>
                     <h3 className="todo__undone__title">{text}</h3>
                     <span className="todo__undone__date">{date.toLocaleDateString()}</span>
                 </div>
@@ -67,12 +83,21 @@ class ToDo extends Component{
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        board: state.board,
+    }
+}
+
 const mapDispatchToPerops = dispatch => {
     return {
         markAsDone: id => {
             dispatch(markAsDone(id))
+        },
+        selectTodo: id => {
+            dispatch(selectTodo(id))
         }
     }
 }
 
-export default connect(null, mapDispatchToPerops)(ToDo)
+export default connect(mapStateToProps, mapDispatchToPerops)(ToDo)

@@ -7,7 +7,7 @@ import ProgressIcon from '../../icons/progress-icon.svg'
 import {connect} from 'react-redux'
 import classNames from 'classnames'
 import {toggleMenu} from '../../actions/menu-actions'
-import {showInbox, showToday, showNext7Days} from '../../actions/scope-actions'
+import {showInbox, showToday, showNext7Days} from '../../actions/board-actions'
 
 class Menu extends Component{
     constructor(props){
@@ -25,7 +25,7 @@ class Menu extends Component{
         this.menuWidth = 300
     }
 
-    componentWillUpdate(nextProps){
+    componentWillReceiveProps(nextProps){
         if(nextProps.openMenu !== this.props.openMenu){
             if(nextProps.openMenu){
                 this.setState({menuLeft: 0, menuAnimated: true})

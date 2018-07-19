@@ -21,7 +21,8 @@ const initialState = {
     next7DaysUndoneCount: filterTodosByDateRangeAndDone(allTodos, [today, tomorrow, day3, day4, day5, day6, day7], false).length,
     scopeId: 'INBOX', 
     scopeTitle: 'Inbox', 
-    todosGroups: [{todos: allTodos}]}
+    todosGroups: [{todos: allTodos}],
+    selectedTodoId: 0}
 
 const board = (state = initialState, action) => {
     switch(action.type){
@@ -31,6 +32,9 @@ const board = (state = initialState, action) => {
                     return {...todo, done: true}
                 else return todo
             })
+            let todosGroups = state.todosGroups.map(todoGroup => {
+                return {...todoGroup, todos: todoGroup.todos.filter(todo => todo.id !== action.id)}
+            })
             return {...state, 
                 allTodos: newAllTodos,
                 allTodosCount: newAllTodos.length,
@@ -38,6 +42,19 @@ const board = (state = initialState, action) => {
                 inboxUndoneCount: filterTodosByDone(newAllTodos, false).length,
                 todayUndoneCount: filterTodosByDateAndDone(newAllTodos, today, false).length,
                 next7DaysUndoneCount: filterTodosByDateRangeAndDone(newAllTodos, [today, tomorrow, day3, day4, day5, day6, day7], false).length,
+                todosGroups: todosGroups,
+            }
+        }
+        case 'SELECT_TODO': {
+            return {
+                ...state,
+                selectedTodoId: action.id
+            }
+        }
+        case 'UNSELECT_TODO': {
+            return {
+                ...state,
+                selectedTodoId: 0,
             }
         }
         case 'SHOW_INBOX': {
@@ -45,7 +62,7 @@ const board = (state = initialState, action) => {
                 ...state,
                 scopeId: 'INBOX', 
                 scopeTitle: 'Inbox',
-                todosGroups: [{todos: filterTodosByDone(state.allTodos)}],
+                todosGroups: [{todos: filterTodosByDone(state.allTodos, false)}],
             }
         }
         case 'SHOW_TODAY': {
@@ -57,7 +74,6 @@ const board = (state = initialState, action) => {
             }
         }
         case 'SHOW_NEXT7DAYS': {
-
             let next7Days= [{title: 'Today', subtitle: getDayMonDate(today), date: today, todos: filterTodosByDateAndDone(state.allTodos, today, false)},
                 {title: 'Tomorrow', subtitle: getDayMonDate(tomorrow), date: tomorrow, todos: filterTodosByDateAndDone(state.allTodos, tomorrow, false)},
                 {title: getWeekday(day3), subtitle: getMonDate(day3), date: day3, todos: filterTodosByDateAndDone(state.allTodos, day3, false)},

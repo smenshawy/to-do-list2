@@ -23,6 +23,10 @@
     transition: left 0.5s, height 0.5s 0.5s, padding 0.5s 0.5s;
 }
 
+.todo__undone--selected{
+    background-color: #FFF1FF;
+}
+
 .todo__undone--priority1{
     border-left: 5px solid red;
 }
