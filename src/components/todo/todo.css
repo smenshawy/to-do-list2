@@ -1,3 +1,5 @@
+
+
 .todo{
     position: relative;
     border-bottom: 1px solid whitesmoke;
@@ -39,12 +41,11 @@
     border-left: 5px solid yellowgreen;
 }
 
-.todo__undone--invisible{
+/* .todo__undone--invisible{
     height: 0px;
     padding: 0px;
     border: 0px;
-    border: 0;
-}
+} */
 
 .todo__undone__title{
     color: black;
@@ -71,4 +72,22 @@
     height: 30px;
     width: 30px;
     padding: 10px 0;
+}
+
+.todo-enter {
+    opacity: 0.01;
+}
+
+.todo-enter.todo-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+}
+
+.todo-leave {
+    opacity: 1;
+}
+
+.todo-leave.todo-leave-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-in;
 }

@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import ToDo from '../../components/todo/todo'
 import './todos-group.css'
 import {getTodayDate, compareDates} from '../../utils'
+import { CSSTransitionGroup } from 'react-transition-group'
 
 class TodosGroup extends Component{
     constructor(props){
@@ -22,9 +23,15 @@ class TodosGroup extends Component{
                     <h4 className='todos-group__header__title'>{title}</h4>
                     <span className='todos-group__header__subtitle'>{subtitle}</span>
                 </div>}
-                {todos.map(({id, text, done, date, priority}) => {return (
-                    <ToDo key={id} id={id} text={text} done={done} date={date} priority={priority}/>
-                )})}
+
+                <CSSTransitionGroup
+                transitionName="todo"
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={500}>
+                    {todos.map(({id, text, done, date, priority}) => {return (
+                        <ToDo key={id} id={id} text={text} done={done} date={date} priority={priority}/>
+                    )})}
+                </CSSTransitionGroup>
             </div>
         )
     }
