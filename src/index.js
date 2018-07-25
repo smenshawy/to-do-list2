@@ -1,17 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Board from './components/board/board';
+import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import {Provider} from 'react-redux'
 import {createStore, applyMiddleware} from 'redux'
 import rootReducer from './reducers'
 import reduxLogger from 'redux-logger'
+import {composeWithDevTools} from 'redux-devtools-extension'
 
-const store = createStore(rootReducer, applyMiddleware(reduxLogger))
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(reduxLogger)))
 ReactDOM.render(
-    <Provider store={store}>
-        <Board />
-    </Provider>, 
-    document.getElementById('root'));
+        <App store={store}/>, 
+        document.getElementById('root'));
 registerServiceWorker();

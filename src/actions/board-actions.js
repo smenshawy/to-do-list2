@@ -23,6 +23,14 @@ export const markAsDone = (id) =>{
     }
 }
 
+export const updateTodoDate = (id, date) =>{
+    return {
+        type: 'UPDATE_TODO_DATE',
+        id,
+        date,
+    }
+}
+
 export const selectTodo = (id) =>{
     return {
         type: 'SELECT_TODO',

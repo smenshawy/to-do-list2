@@ -1,6 +1,6 @@
 export function addDays(startDate, days) {
     let newDate = new Date()
-    newDate.setDate(newDate.getDate() + days)
+    newDate.setDate(startDate.getDate() + days)
     return newDate
 }
 
@@ -10,6 +10,7 @@ export function getWeekday(date){
 }
 
 export function getMonDate(date){
+    console.log(date)
     let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     return months[date.getMonth()] + ' ' + date.getDate()
 }
@@ -24,9 +25,15 @@ export function getTodayDate(){
     return new Date(new Date().toDateString())
 }
 
+export function getTomorrowDate(){
+    return addDays(getTodayDate(), 1)
+}
+
+export function getNextWeekDate(){
+    return addDays(getTodayDate(), 7)
+}
+
 export function compareDates(date1, date2){
-    console.log("date1", date1)
-    console.log("date2", date2)
     return date1.getDate() === date2.getDate() 
         && date1.getMonth() === date2.getMonth()
         && date1.getYear() === date2.getYear()
