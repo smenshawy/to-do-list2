@@ -1,7 +1,8 @@
 import {getMonDate, getTodayDate, addDays, compareDates} from './'
 
 export function getSelectedTodoDate(allTodos, selectedTodoId){
-    return allTodos.find(todo => todo.id === selectedTodoId).date
+    let todo = allTodos.find(todo => todo.id === selectedTodoId)
+    return todo? todo.date : null
 }
 
 export function getSuggestedDate(allTodos){

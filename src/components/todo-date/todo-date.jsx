@@ -7,8 +7,9 @@ import './todo-date.css'
 import {connect} from 'react-redux'
 import {getSelectedTodoDate, getSuggestedDate} from '../../utils/todo-date-utils'
 import {getMonDate, getTodayDate, getTomorrowDate, getNextWeekDate} from '../../utils'
-import {updateTodoDate, unselectTodo} from '../../actions/board-actions'
+import {updateTodoDate, unselectTodo, setNewDate} from '../../actions/board-actions'
 import {Link} from 'react-router-dom'
+import {bindActionCreators} from 'redux'
 
 class TodoDate extends Component{
 
@@ -19,14 +20,20 @@ class TodoDate extends Component{
     }
 
     submitTodoDateUpdate(id, date){
-        const {updateTodoDate, unselectTodo, history} = this.props
-        updateTodoDate(id, date)
-        unselectTodo()
-        history.replace("/")
+        const {editDateOnly, updateTodoDate, unselectTodo, history, setNewDate} = this.props
+        if(editDateOnly){
+            updateTodoDate(id, date)
+            unselectTodo()
+            history.replace("/")
+        } else {
+            console.log(1)
+            setNewDate(date)
+            history.replace("/todo-details")
+        }
     }
 
     render(){
-        const {selectedTodoId, selectedTodoDate, suggestedDate} = this.props
+        const {selectedTodoId, selectedTodoDate, suggestedDate, newDate} = this.props
         return(
             <div className="todo-date">
                 <div className="todo-date__options-group">
@@ -36,7 +43,7 @@ class TodoDate extends Component{
                                 <img className="todo-date__options-group__option__icon__image" src={EditIcon}/>
                             </Link>
                         </div>
-                        <h3>{getMonDate(selectedTodoDate)}</h3>
+                        <h3>{getMonDate(newDate || selectedTodoDate)}</h3>
                     </div>
                     <div className="todo-date__options-group__option" onClick={e=> {this.submitTodoDateUpdate(selectedTodoId, suggestedDate)}}>
                         <div className="todo-date__options-group__option__icon">
@@ -73,20 +80,15 @@ class TodoDate extends Component{
 const mapStateToProps = state => {
     return {
         selectedTodoId: state.board.selectedTodoId,
-        selectedTodoDate: getSelectedTodoDate(state.board.allTodos, state.board.selectedTodoId),
+        selectedTodoDate: state.board.selectedTodoId > 0? getSelectedTodoDate(state.board.allTodos, state.board.selectedTodoId) : null,
         suggestedDate: getSuggestedDate(state.board.allTodos),
+        editDateOnly: state.board.editDateOnly,
+        newDate: state.board.newDate,
     }
 }
 
 const mapDispatchToProps = dispatch => {
-    return {
-        updateTodoDate: (id, date) => {
-            dispatch(updateTodoDate(id, date))
-        },
-        unselectTodo: () => {
-            dispatch(unselectTodo())
-        }
-    }
+    return bindActionCreators({updateTodoDate, unselectTodo, setNewDate}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoDate)

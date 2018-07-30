@@ -10,7 +10,7 @@ export function getWeekday(date){
 }
 
 export function getMonDate(date){
-    console.log(date)
+    if(!date) return null
     let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     return months[date.getMonth()] + ' ' + date.getDate()
 }

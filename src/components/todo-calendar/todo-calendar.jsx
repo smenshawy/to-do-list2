@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import Calendar from 'react-calendar'
-import {updateTodoDate, unselectTodo} from '../../actions/board-actions'
+import {updateTodoDate, unselectTodo, setNewDate} from '../../actions/board-actions'
 import {connect} from 'react-redux'
 import {getSelectedTodoDate} from '../../utils/todo-date-utils'
 import {getTodayDate} from '../../utils'
+import {bindActionCreators} from 'redux'
 import './todo-calendar.css'
 
 class TodoCalendar extends Component{
@@ -21,20 +22,26 @@ class TodoCalendar extends Component{
     }
 
     submitTodoDateUpdate(id, date){
-        const {updateTodoDate, unselectTodo, history} = this.props
-        updateTodoDate(id, date)
-        unselectTodo()
-        history.replace("/")
+        const {editDateOnly, updateTodoDate, unselectTodo, history} = this.props
+        console.log(editDateOnly)
+        if(editDateOnly){
+            updateTodoDate(id, date)
+            unselectTodo()
+            history.replace("/")
+        } else {
+            setNewDate(date)
+            history.replace("/todo-details")
+        }
     }
 
     render(){
-        const {selectedTodoDate} = this.props
+        const {selectedTodoDate, newDate} = this.props
         return (
             <div className="todo-calendar">
                 <Calendar
                     minDate={getTodayDate()}
                     onChange={this.handleCalendarChange}
-                    value={selectedTodoDate}/>
+                    value={newDate || selectedTodoDate}/>
             </div>
         )
     }
@@ -44,18 +51,13 @@ const mapStateToProps = state => {
     return {
         selectedTodoId: state.board.selectedTodoId,
         selectedTodoDate: getSelectedTodoDate(state.board.allTodos, state.board.selectedTodoId),
+        editDateOnly: state.board.editDateOnly,
+        newDate: state.board.newDate,
     }
 }
 
 const mapDispatchToProps = dispatch => {
-    return {
-        updateTodoDate: (id, date) => {
-            dispatch(updateTodoDate(id, date))
-        },
-        unselectTodo: () => {
-            dispatch(unselectTodo())
-        }
-    }
+    return bindActionCreators({updateTodoDate, unselectTodo, setNewDate}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoCalendar)

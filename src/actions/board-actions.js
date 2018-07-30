@@ -31,6 +31,23 @@ export const updateTodoDate = (id, date) =>{
     }
 }
 
+export const updateTodo = (id, text, date, priority) =>{
+    return {
+        type: 'UPDATE_TODO',
+        id,
+        text,
+        date,
+        priority,
+    }
+}
+
+export const setNewDate = (date) =>{
+    return {
+        type: 'SET_NEW_DATE',
+        date,
+    }
+}
+
 export const selectTodo = (id) =>{
     return {
         type: 'SELECT_TODO',
@@ -41,5 +58,17 @@ export const selectTodo = (id) =>{
 export const unselectTodo = () =>{
     return {
         type: 'UNSELECT_TODO',
+    }
+}
+
+export const editDateOnly = () => {
+    return {
+        type: 'EDIT_DATE_ONLY',
+    }
+}
+
+export const editTodo = () => {
+    return {
+        type: 'EDIT_TODO',
     }
 }

@@ -20,3 +20,7 @@ export function getNext7DaysTodosGroups(allTodos){
         {title: getWeekday(day6), subtitle: getMonDate(day6), date: day6, todos: filterTodosByDateAndDone(allTodos, day6, false)},
         {title: getWeekday(day7), subtitle: getMonDate(day7), date: day7, todos: filterTodosByDateAndDone(allTodos, day7, false)},]
 }
+
+export function getSelectedTodo(allTodos, selectedTodoId){
+    return allTodos.find(todo => todo.id === selectedTodoId)
+}

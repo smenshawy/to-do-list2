@@ -17,7 +17,9 @@ const initialState = {
     scopeId: 'INBOX', 
     scopeTitle: 'Inbox', 
     todosGroups: [{todos: allTodos}],
-    selectedTodoId: 0}
+    selectedTodoId: 0,
+    editDateOnly: false,
+    newDate: null}
 
 const board = (state = initialState, action) => {
     switch(action.type){
@@ -40,10 +42,10 @@ const board = (state = initialState, action) => {
                 todosGroups: todosGroups,
             }
         }
-        case 'UPDATE_TODO_DATE': {
+        case 'UPDATE_TODO': {
             const newAllTodos = state.allTodos.map(todo => {
                 if(todo.id === action.id)
-                    return {...todo, date: action.date}
+                    return {...todo, text: action.text, date: action.date, priority: action.priority}
                 else return todo
             })
             let todosGroups = []
@@ -64,12 +66,52 @@ const board = (state = initialState, action) => {
             }
             return {...state, 
                 allTodos: newAllTodos,
-                allTodosCount: newAllTodos.length,
                 doneTodosCount: filterTodosByDone(newAllTodos, true).length,
                 inboxUndoneCount: filterTodosByDone(newAllTodos, false).length,
                 todayUndoneCount: filterTodosByDateAndDone(newAllTodos, today, false).length,
                 next7DaysUndoneCount: filterTodosByDateRangeAndDone(newAllTodos, getNext7DaysDates(), false).length,
                 todosGroups: todosGroups,
+                editDateOnly: false,
+            }
+        }
+        case 'UPDATE_TODO_DATE': {
+            const newAllTodos = state.allTodos.map(todo => {
+                if(todo.id === action.id)
+                    {
+                    return {...todo, date: action.date}
+                    }
+                else return todo
+            })
+            let todosGroups = []
+            switch(state.scopeId){
+                case 'INBOX': {
+                    todosGroups = [{todos: filterTodosByDone(newAllTodos, false)}]
+                    break
+                }
+                case 'TODAY': {
+                    todosGroups = [{title: 'Today', subtitle: getDayMonDate(today), date: today, todos: filterTodosByDateAndDone(newAllTodos, today, false)}]
+                    break
+                }
+                case 'NEXT_7_DAYS': {
+                    todosGroups = getNext7DaysTodosGroups(newAllTodos)
+                    break
+                }
+
+            }
+            return {...state, 
+                allTodos: newAllTodos,
+                doneTodosCount: filterTodosByDone(newAllTodos, true).length,
+                inboxUndoneCount: filterTodosByDone(newAllTodos, false).length,
+                todayUndoneCount: filterTodosByDateAndDone(newAllTodos, today, false).length,
+                next7DaysUndoneCount: filterTodosByDateRangeAndDone(newAllTodos, getNext7DaysDates(), false).length,
+                todosGroups: todosGroups,
+                editDateOnly: false,
+            }
+        }
+        case 'SET_NEW_DATE': {
+            return {
+                ...state,
+                newDate: action.date,
             }
         }
         case 'SELECT_TODO': {
@@ -82,6 +124,18 @@ const board = (state = initialState, action) => {
             return {
                 ...state,
                 selectedTodoId: 0,
+            }
+        }
+        case 'EDIT_DATE_ONLY': {
+            return {
+                ...state,
+                editDateOnly: true,
+            }
+        }
+        case 'EDIT_TODO': {
+            return {
+                ...state,
+                editDateOnly: false,
             }
         }
         case 'SHOW_INBOX': {
